@@ -1,4 +1,4 @@
-package com.cqrs.protoAPI;
+package com.cqrs.protoapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

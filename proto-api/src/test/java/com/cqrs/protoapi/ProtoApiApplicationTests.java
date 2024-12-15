@@ -1,4 +1,4 @@
-package com.cqrs.protoAPI;
+package com.cqrs.protoapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
