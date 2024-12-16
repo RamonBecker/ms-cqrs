@@ -49,4 +49,15 @@ public class PeopleController {
         peopleService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Person> updatePerson(@PathVariable("id") String id, @RequestBody Person person){
+        return ResponseEntity.ok(peopleService.update(id, person));
+    }
+
+    @GetMapping("/by-name/{name}")
+    public ResponseEntity<List<Person>> getPeopleByName(@PathVariable("name") String name){
+        return ResponseEntity.ok(peopleService.getPersonByName(name));
+    }
+
 }

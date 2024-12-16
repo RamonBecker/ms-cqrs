@@ -15,7 +15,7 @@ public interface IPeopleService {
 
     Person create(Person person);
 
-    Person update(Person person);
+    Person update(String id, Person person);
 
     void delete(String id);
 

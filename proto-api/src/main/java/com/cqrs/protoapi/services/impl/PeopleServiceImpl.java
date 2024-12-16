@@ -6,6 +6,7 @@ import com.github.javafaker.Faker;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PeopleServiceImpl implements IPeopleService {
@@ -25,7 +26,7 @@ public class PeopleServiceImpl implements IPeopleService {
 
     @Override
     public List<Person> getPersonByName(String name) {
-        return List.of();
+        return peoples.stream().filter(p -> p.getFullname().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
     }
 
     @Override
@@ -42,8 +43,30 @@ public class PeopleServiceImpl implements IPeopleService {
     }
 
     @Override
-    public Person update(Person person) {
-        return null;
+    public Person update(String id, Person person) {
+
+        Optional<Person> personToUpdate = getPersonById(id);
+
+        if (personToUpdate.isEmpty())
+            throw new RuntimeException("Person not found");
+
+        peoples.remove(personToUpdate.get());
+
+        var updatePeople = changePerson(id, person);
+
+        peoples.add(updatePeople);
+
+        return updatePeople;
+    }
+
+    private Person changePerson(String id, Person person) {
+        return Person
+                .builder()
+                .id(id)
+                .fullname(person.getFullname())
+                .birthDate(person.getBirthDate())
+                .age(person.getAge())
+                .build();
     }
 
     @Override
