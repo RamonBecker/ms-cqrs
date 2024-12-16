@@ -1,0 +1,100 @@
+{
+	"info": {
+		"_postman_id": "da8c1c2e-6443-4932-8e02-89343663ffac",
+		"name": "Proto-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "3432153"
+	},
+	"item": [
+		{
+			"name": "create-people",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/people/create-people/10"
+			},
+			"response": []
+		},
+		{
+			"name": "create-person",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\":\"Hugo Alves Dutra\",\r\n    \"birthDate\":\"1981-01-17\",\r\n    \"age\":43\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/people/create-person"
+			},
+			"response": []
+		},
+		{
+			"name": "delete-person by id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\":\"Hugo Alves Dutra\",\r\n    \"birthDate\":\"1981-01-17\",\r\n    \"age\":43\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/people/1515298c-0a0d-4c70-9bd0-4631dcff861b"
+			},
+			"response": []
+		},
+		{
+			"name": "update-person",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\":\"Hugo Alves\",\r\n    \"birthDate\":\"1981-01-17\",\r\n    \"age\":43\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/people/1515298c-0a0d-4c70-9bd0-4631dcff861b"
+			},
+			"response": []
+		},
+		{
+			"name": "get-people",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/people/"
+			},
+			"response": []
+		},
+		{
+			"name": "get-person-by-name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/people/by-name/Hugo Alves"
+			},
+			"response": []
+		},
+		{
+			"name": "get-version",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8080/api/people/version"
+			},
+			"response": []
+		}
+	]
+}
