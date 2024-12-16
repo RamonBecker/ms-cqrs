@@ -5,10 +5,7 @@ import com.cqrs.protoapi.models.Person;
 import com.cqrs.protoapi.services.IPeopleService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,5 +37,16 @@ public class PeopleController {
     public ResponseEntity<List<Person>> getPeoples() {
         return ResponseEntity.ok(peopleService.getPeoples());
 
+    }
+
+    @PostMapping("/create-person")
+    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
+        return ResponseEntity.ok(peopleService.create(person));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePerson(@PathVariable("id") String id) {
+        peopleService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

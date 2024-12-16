@@ -5,10 +5,7 @@ import com.cqrs.protoapi.services.IPeopleService;
 import com.github.javafaker.Faker;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PeopleServiceImpl implements IPeopleService {
@@ -22,8 +19,8 @@ public class PeopleServiceImpl implements IPeopleService {
     }
 
     @Override
-    public Optional<Person> getPersonById(String id) {
-        return Optional.empty();
+    public Optional<Person> getPersonById(String idPerson) {
+        return peoples.stream().filter(p -> p.getId().equals(idPerson)).findFirst();
     }
 
     @Override
@@ -33,7 +30,15 @@ public class PeopleServiceImpl implements IPeopleService {
 
     @Override
     public Person create(Person person) {
-        return null;
+        var newPerson = Person
+                .builder()
+                .id(UUID.randomUUID().toString())
+                .fullname(person.getFullname())
+                .birthDate(person.getBirthDate())
+                .age(person.getAge())
+                .build();
+        peoples.add(newPerson);
+        return newPerson;
     }
 
     @Override
@@ -43,24 +48,26 @@ public class PeopleServiceImpl implements IPeopleService {
 
     @Override
     public void delete(String id) {
+        var findPerson = getPersonById(id).orElseThrow(() -> new NoSuchElementException("Element not found"));
 
+        peoples.remove(findPerson);
     }
 
     @Override
     public void generatePeople(Integer quantity) {
 
-        if(quantity <= 0) return;
+        if (quantity <= 0) return;
 
         peoples.clear();
 
         for (int i = 0; i < quantity; i++) {
-            Person person = Person
-                         .builder()
-                         .id(UUID.randomUUID().toString())
-                         .fullname(faker.name().fullName())
-                         .birthDate(faker.date().birthday())
-                         .age(faker.number().numberBetween(1, 100))
-                          .build();
+            var person = Person
+                    .builder()
+                    .id(UUID.randomUUID().toString())
+                    .fullname(faker.name().fullName())
+                    .birthDate(faker.date().birthday())
+                    .age(faker.number().numberBetween(1, 100))
+                    .build();
             peoples.add(person);
         }
 
