@@ -1,10 +1,10 @@
-package com.cqrs.proto_api;
+package br.com.beautique;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProtoApiApplicationTests {
+class BeautiqueApplicationTests {
 
 	@Test
 	void contextLoads() {

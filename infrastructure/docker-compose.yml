@@ -1,0 +1,19 @@
+services:
+  beautique-db:
+    container_name: beautique-db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: beautique
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      PGDATA: /data/postgres
+    volumes:
+      - "./init-beautique-schema.sql:/docker-entrypoint-initdb.d/init-beautique-schema.sql"
+    networks:
+      - beautique-network
+    ports:
+      - "3334:5432"
+
+networks:
+  beautique-network:
+    driver: bridge
