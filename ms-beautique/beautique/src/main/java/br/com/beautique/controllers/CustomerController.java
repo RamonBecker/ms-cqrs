@@ -1,14 +1,10 @@
 package br.com.beautique.controllers;
 
 import br.com.beautique.dtos.CustomerDTO;
-import br.com.beautique.entities.CustomerEntity;
 import br.com.beautique.services.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customer")
@@ -22,5 +18,9 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.create(customer));
     }
 
-
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> delete(@PathVariable Long id) {
+        customerService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

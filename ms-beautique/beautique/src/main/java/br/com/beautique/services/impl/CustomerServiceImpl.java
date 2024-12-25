@@ -22,4 +22,14 @@ public class CustomerServiceImpl implements ICustomerService {
         var newCustomer = costumerRepository.save(customer);
         return convertUtil.convertToTarget(newCustomer);
     }
+
+    @Override
+    public void delete(Long id) {
+        var findCustomer = costumerRepository.findById(id);
+
+        if (findCustomer.isEmpty())
+            throw new RuntimeException("Customer not found!");
+
+        costumerRepository.delete(findCustomer.get());
+    }
 }
