@@ -1,5 +1,6 @@
 package br.com.beautique.controllers;
 
+import br.com.beautique.dtos.CustomerDTO;
 import br.com.beautique.entities.CustomerEntity;
 import br.com.beautique.services.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class CustomerController {
     private ICustomerService customerService;
 
     @PostMapping()
-    ResponseEntity<CustomerEntity> create(@RequestBody CustomerEntity customer) {
+    ResponseEntity<CustomerDTO> create(@RequestBody CustomerDTO customer) {
         return ResponseEntity.ok(customerService.create(customer));
     }
 

@@ -1,8 +1,8 @@
 package br.com.beautique.services;
 
-import br.com.beautique.entities.CustomerEntity;
+import br.com.beautique.dtos.CustomerDTO;
 
 public interface ICustomerService {
 
-    CustomerEntity create(CustomerEntity customer);
+    CustomerDTO create(CustomerDTO customer);
 }
