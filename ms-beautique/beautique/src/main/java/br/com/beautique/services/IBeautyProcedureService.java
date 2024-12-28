@@ -6,5 +6,5 @@ public interface IBeautyProcedureService {
 
     BeautyProcedureDTO create(BeautyProcedureDTO beautyProcedure);
     void delete(Long id);
-
+    BeautyProcedureDTO update(BeautyProcedureDTO beautyProcedure);
 }
