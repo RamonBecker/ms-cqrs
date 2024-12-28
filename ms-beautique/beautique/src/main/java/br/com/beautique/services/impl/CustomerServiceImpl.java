@@ -32,4 +32,19 @@ public class CustomerServiceImpl implements ICustomerService {
 
         costumerRepository.delete(findCustomer.get());
     }
+
+    @Override
+    public CustomerDTO update(CustomerDTO customer) {
+        var findCustomer = costumerRepository.findById(customer.getId());
+
+        if (findCustomer.isEmpty())
+            throw new RuntimeException("Customer not found!");
+
+        var customerEntity = convertUtil.convertToSource(customer);
+
+        customerEntity.setAppointments(findCustomer.get().getAppointments());
+        customerEntity.setCreatedAt(findCustomer.get().getCreatedAt());
+
+        return convertUtil.convertToTarget(costumerRepository.save(customerEntity));
+    }
 }

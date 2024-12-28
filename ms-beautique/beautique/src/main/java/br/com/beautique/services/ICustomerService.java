@@ -6,5 +6,6 @@ public interface ICustomerService {
 
     CustomerDTO create(CustomerDTO customer);
     void delete(Long id);
+    CustomerDTO update(CustomerDTO customer);
 
 }
