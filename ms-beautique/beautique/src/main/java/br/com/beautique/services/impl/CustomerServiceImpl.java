@@ -24,7 +24,7 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         var findCustomer = costumerRepository.findById(id);
 
         if (findCustomer.isEmpty())

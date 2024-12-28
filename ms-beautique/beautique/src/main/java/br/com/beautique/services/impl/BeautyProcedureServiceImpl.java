@@ -26,7 +26,7 @@ public class BeautyProcedureServiceImpl implements IBeautyProcedureService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         var findBeautyProcedure = beautyProcedureRepository.findById(id);
 
         if (findBeautyProcedure.isEmpty())
