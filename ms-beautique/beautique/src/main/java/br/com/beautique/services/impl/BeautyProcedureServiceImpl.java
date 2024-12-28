@@ -24,4 +24,14 @@ public class BeautyProcedureServiceImpl implements IBeautyProcedureService {
 
         return convertUtil.convertToTarget(newBeautyProcedureEntity);
     }
+
+    @Override
+    public void delete(Long id) {
+        var findBeautyProcedure = beautyProcedureRepository.findById(id);
+
+        if (findBeautyProcedure.isEmpty())
+            throw new RuntimeException("Beauty Procedure not found!");
+
+        beautyProcedureRepository.deleteById(id);
+    }
 }
