@@ -13,6 +13,17 @@ services:
       - beautique-network
     ports:
       - "3334:5432"
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASSWORD: guest
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - beautique-network
 
 networks:
   beautique-network:
