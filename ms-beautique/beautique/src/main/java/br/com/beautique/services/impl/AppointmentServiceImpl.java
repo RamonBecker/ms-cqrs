@@ -23,6 +23,19 @@ public class AppointmentServiceImpl implements IAppointmentService {
     }
 
     @Override
+    public AppointmentDTO update(AppointmentDTO appointment) {
+        var findAppointment = appointmentRepository.findById(appointment.getId());
+
+        if(findAppointment.isEmpty())
+            throw new RuntimeException("Appointment not found!");
+
+        var appointmentEntity = convertUtil.convertToSource(appointment);
+        appointmentEntity.setCreatedAt(findAppointment.get().getCreatedAt());
+
+        return convertUtil.convertToTarget(appointmentRepository.save(appointmentEntity));
+    }
+
+    @Override
     public AppointmentDTO delete(AppointmentDTO appointment) {
         return null;
     }
