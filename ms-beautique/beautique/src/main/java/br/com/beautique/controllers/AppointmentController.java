@@ -19,9 +19,14 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.create(appointment));
     }
 
-   @PatchMapping
-    ResponseEntity<AppointmentDTO> update(@RequestBody AppointmentDTO appointment){
+    @PatchMapping
+    ResponseEntity<AppointmentDTO> update(@RequestBody AppointmentDTO appointment) {
         return ResponseEntity.ok(appointmentService.update(appointment));
-   }
+    }
 
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        appointmentService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

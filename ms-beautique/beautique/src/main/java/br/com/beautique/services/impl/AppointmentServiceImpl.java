@@ -36,13 +36,9 @@ public class AppointmentServiceImpl implements IAppointmentService {
     }
 
     @Override
-    public AppointmentDTO delete(AppointmentDTO appointment) {
-        return null;
-    }
-
-    @Override
     public void deleteById(Long id) {
-
+        var findAppointment = appointmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Appointment not found!"));
+        appointmentRepository.delete(findAppointment);
     }
 
     @Override
