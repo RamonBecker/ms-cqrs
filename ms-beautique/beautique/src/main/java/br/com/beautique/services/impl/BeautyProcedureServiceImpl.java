@@ -4,6 +4,7 @@ import br.com.beautique.dtos.BeautyProcedureDTO;
 import br.com.beautique.entities.BeautyProceduresEntity;
 import br.com.beautique.repositories.IBeautyProcedureRepository;
 import br.com.beautique.services.IBeautyProcedureService;
+import br.com.beautique.services.IBrokerService;
 import br.com.beautique.utils.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,20 @@ public class BeautyProcedureServiceImpl implements IBeautyProcedureService {
     @Autowired
     private IBeautyProcedureRepository beautyProcedureRepository;
 
+    @Autowired
+    private IBrokerService brokerService;
+
     private final ConvertUtil<BeautyProceduresEntity, BeautyProcedureDTO> convertUtil = new ConvertUtil<>(BeautyProceduresEntity.class, BeautyProcedureDTO.class);
+
+
 
     @Override
     public BeautyProcedureDTO create(BeautyProcedureDTO beautyProcedure) {
 
         var beautyProcedureEntity = convertUtil.convertToSource(beautyProcedure);
         var newBeautyProcedureEntity = beautyProcedureRepository.save(beautyProcedureEntity);
+
+        sendBeautyProceduresQueue(newBeautyProcedureEntity);
 
         return convertUtil.convertToTarget(newBeautyProcedureEntity);
     }
@@ -48,6 +56,21 @@ public class BeautyProcedureServiceImpl implements IBeautyProcedureService {
         beautyProcedureEntity.setAppointments(findBeautyProcedure.get().getAppointments());
         beautyProcedureEntity.setCreatedAt(findBeautyProcedure.get().getCreatedAt());
 
-        return convertUtil.convertToTarget(beautyProcedureRepository.save(beautyProcedureEntity));
+        var updateBeautyProcedure = beautyProcedureRepository.save(beautyProcedureEntity);
+
+        sendBeautyProceduresQueue(updateBeautyProcedure);
+
+        return convertUtil.convertToTarget(updateBeautyProcedure);
+    }
+
+    private void sendBeautyProceduresQueue(BeautyProceduresEntity beautyProcedures){
+        var beautyProcedureDTO = BeautyProcedureDTO.builder()
+                .id(beautyProcedures.getId())
+                .name(beautyProcedures.getName())
+                .description(beautyProcedures.getDescription())
+                .price(beautyProcedures.getPrice())
+                .build();
+
+        brokerService.send("beautyProcedures",beautyProcedureDTO);
     }
 }
