@@ -3,6 +3,7 @@ package br.com.beautique.services.impl;
 import br.com.beautique.dtos.CustomerDTO;
 import br.com.beautique.entities.CustomerEntity;
 import br.com.beautique.repositories.ICostumerRepository;
+import br.com.beautique.services.IBrokerService;
 import br.com.beautique.services.ICustomerService;
 import br.com.beautique.utils.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,18 @@ public class CustomerServiceImpl implements ICustomerService {
     @Autowired
     private ICostumerRepository costumerRepository;
 
+    @Autowired
+    private IBrokerService brokerService;
+
     private final ConvertUtil<CustomerEntity, CustomerDTO> convertUtil = new ConvertUtil<>(CustomerEntity.class, CustomerDTO.class);
 
     @Override
     public CustomerDTO create(CustomerDTO customerDTO) {
         var customer = convertUtil.convertToSource(customerDTO);
         var newCustomer = costumerRepository.save(customer);
+
+        sendCustomerToQueue(newCustomer);
+
         return convertUtil.convertToTarget(newCustomer);
     }
 
@@ -45,6 +52,22 @@ public class CustomerServiceImpl implements ICustomerService {
         customerEntity.setAppointments(findCustomer.get().getAppointments());
         customerEntity.setCreatedAt(findCustomer.get().getCreatedAt());
 
-        return convertUtil.convertToTarget(costumerRepository.save(customerEntity));
+        var updateCustomer =costumerRepository.save(customerEntity);
+
+        sendCustomerToQueue(updateCustomer);
+
+        return convertUtil.convertToTarget(updateCustomer);
     }
+
+    private void sendCustomerToQueue(CustomerEntity customer) {
+        var customerDTO = CustomerDTO.builder()
+                .id(customer.getId())
+                .name(customer.getName())
+                .email(customer.getEmail())
+                .phone(customer.getPhone())
+                .build();
+
+        brokerService.send("customer", customerDTO);
+    }
+
 }
