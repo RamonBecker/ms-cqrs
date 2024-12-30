@@ -1,6 +1,9 @@
 package br.com.beautique.services.impl;
 
 import br.com.beautique.dtos.AppointmentDTO;
+import br.com.beautique.dtos.BeautyProcedureDTO;
+import br.com.beautique.dtos.CustomerDTO;
+import br.com.beautique.dtos.FullAppointmentDTO;
 import br.com.beautique.entities.AppointmentsEntity;
 import br.com.beautique.entities.BeautyProceduresEntity;
 import br.com.beautique.entities.CustomerEntity;
@@ -8,7 +11,9 @@ import br.com.beautique.repositories.IAppointmentRepository;
 import br.com.beautique.repositories.IBeautyProcedureRepository;
 import br.com.beautique.repositories.ICostumerRepository;
 import br.com.beautique.services.IAppointmentService;
+import br.com.beautique.services.IBrokerService;
 import br.com.beautique.utils.ConvertUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +29,21 @@ public class AppointmentServiceImpl implements IAppointmentService {
     @Autowired
     private ICostumerRepository costumerRepository;
 
+    @Autowired
+    private IBrokerService brokerService;
+
     private final ConvertUtil<AppointmentsEntity, AppointmentDTO> convertUtil = new ConvertUtil<>(AppointmentsEntity.class, AppointmentDTO.class);
+
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Override
     public AppointmentDTO create(AppointmentDTO appointment) {
         var appointmentEntity = convertUtil.convertToSource(appointment);
-        return convertUtil.convertToTarget(appointmentRepository.save(appointmentEntity));
+        var createAppointment = appointmentRepository.save(appointmentEntity);
+
+        sendAppoimentsTOQueue(createAppointment);
+
+        return convertUtil.convertToTarget(createAppointment);
     }
 
     @Override
@@ -39,13 +53,11 @@ public class AppointmentServiceImpl implements IAppointmentService {
         var appointmentEntity = convertUtil.convertToSource(appointment);
         appointmentEntity.setCreatedAt(findAppointment.getCreatedAt());
 
-        return convertUtil.convertToTarget(appointmentRepository.save(appointmentEntity));
-    }
+        var updateAppointment = appointmentRepository.save(appointmentEntity);
 
-    @Override
-    public void deleteById(Long id) {
-        var findAppointment = findAppointmentById(id);
-        appointmentRepository.delete(findAppointment);
+        sendAppoimentsTOQueue(updateAppointment);
+
+        return convertUtil.convertToTarget(updateAppointment);
     }
 
     @Override
@@ -58,7 +70,17 @@ public class AppointmentServiceImpl implements IAppointmentService {
         findAppointment.setBeautyProcedures(findBeautyProcedures);
         findAppointment.setAppointmentsOpen(false);
 
-        return buildAppointmentsDTO(appointmentRepository.save(findAppointment));
+        var updateAppointment = appointmentRepository.save(findAppointment);
+
+        sendAppoimentsTOQueue(updateAppointment);
+
+        return buildAppointmentsDTO(updateAppointment);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        var findAppointment = findAppointmentById(id);
+        appointmentRepository.delete(findAppointment);
     }
 
     private AppointmentsEntity findAppointmentById(Long id) {
@@ -83,5 +105,19 @@ public class AppointmentServiceImpl implements IAppointmentService {
                 .build();
     }
 
+    private void sendAppoimentsTOQueue(AppointmentsEntity appointments) {
 
+        var customerDTO = appointments.getCustomer() != null ? modelMapper.map(appointments.getCustomer(), CustomerDTO.class) : null;
+        var beautyProceduresDTO = appointments.getBeautyProcedures() != null ? modelMapper.map(appointments.getBeautyProcedures(), BeautyProcedureDTO.class) : null;
+
+        var fullAppointmentDTO = FullAppointmentDTO.builder()
+                .id(appointments.getId())
+                .dateTime(appointments.getDateTime())
+                .appoimentsOpen(appointments.getAppointmentsOpen())
+                .customer(customerDTO)
+                .beautyProcedure(beautyProceduresDTO)
+                .build();
+
+        brokerService.send("appoiments", fullAppointmentDTO);
+    }
 }
