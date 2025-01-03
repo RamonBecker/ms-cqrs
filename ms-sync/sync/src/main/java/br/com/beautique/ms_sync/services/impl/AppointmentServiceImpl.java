@@ -4,7 +4,9 @@ import br.com.beautique.ms_sync.dtos.appointments.FullAppointmentDTO;
 import br.com.beautique.ms_sync.dtos.beautyprocedures.BeautyProcedureDTO;
 import br.com.beautique.ms_sync.dtos.customers.CustomerDTO;
 import br.com.beautique.ms_sync.services.IAppointmentService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AppointmentServiceImpl implements IAppointmentService {
     @Override
     public void save(FullAppointmentDTO appointment) {
