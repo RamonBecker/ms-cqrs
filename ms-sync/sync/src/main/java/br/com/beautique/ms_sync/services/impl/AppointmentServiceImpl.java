@@ -42,7 +42,7 @@ public class AppointmentServiceImpl implements IAppointmentService {
         try {
 
             SyncLogger.info("Update appointment customer: " + customer.getId());
-            var queryCustomer = new Query(Criteria.where("customer_id").is(customer.getId()));
+            var queryCustomer = new Query(Criteria.where("customer.id").is(customer.getId()));
             var updateCustomer = new Update().set("customer", customer);
             mongoTemplate.updateMulti(queryCustomer, updateCustomer, FullAppointmentDTO.class);
 
