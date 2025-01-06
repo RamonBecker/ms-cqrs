@@ -20,7 +20,7 @@ public class FullAppointmentsDTO {
 
 
     private Long id;
-    private LocalDate datetime;
+    private LocalDate dateTime;
     private Boolean appointmentsOpen;
 
     private CustomerDTO customer;

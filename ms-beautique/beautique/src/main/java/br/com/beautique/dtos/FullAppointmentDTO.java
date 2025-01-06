@@ -15,7 +15,7 @@ public class FullAppointmentDTO {
 
     private Long id;
     private LocalDateTime dateTime;
-    private Boolean appoimentsOpen;
+    private Boolean appointmentsOpen;
 
     private CustomerDTO customer;
     private BeautyProcedureDTO beautyProcedure;
