@@ -1,4 +1,4 @@
-package br.com.beautique.ms_sync.dtos.customers;
+package br.com.beautique.query.dtos.customers;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,4 +17,6 @@ public class CustomerDTO {
     private String name;
     private String email;
     private String phone;
+
+
 }

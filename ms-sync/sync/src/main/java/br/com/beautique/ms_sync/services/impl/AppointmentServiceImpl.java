@@ -3,6 +3,7 @@ package br.com.beautique.ms_sync.services.impl;
 import br.com.beautique.ms_sync.dtos.appointments.FullAppointmentDTO;
 import br.com.beautique.ms_sync.dtos.beautyprocedures.BeautyProcedureDTO;
 import br.com.beautique.ms_sync.dtos.customers.CustomerDTO;
+
 import br.com.beautique.ms_sync.repositories.IAppointmentRepository;
 import br.com.beautique.ms_sync.services.IAppointmentService;
 import br.com.beautique.ms_sync.utils.SyncLogger;
@@ -23,14 +24,12 @@ public class AppointmentServiceImpl implements IAppointmentService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-
     @Override
     public void save(FullAppointmentDTO appointment) {
-        try {
-
+        try{
             SyncLogger.info("Saving appointment: " + appointment.getId());
             appointmentRepository.save(appointment);
-        } catch (Exception e) {
+        }catch (Exception e){
             SyncLogger.error("Error saving appointment: " + e.getMessage());
             SyncLogger.trace(Arrays.toString(e.getStackTrace()));
         }
@@ -38,36 +37,31 @@ public class AppointmentServiceImpl implements IAppointmentService {
 
     @Override
     public void updateCustomer(CustomerDTO customer) {
-
         try {
-
-            SyncLogger.info("Update appointment customer: " + customer.getId());
-            var queryCustomer = new Query(Criteria.where("customer.id").is(customer.getId()));
-            var updateCustomer = new Update().set("customer", customer);
-            mongoTemplate.updateMulti(queryCustomer, updateCustomer, FullAppointmentDTO.class);
-
-        } catch (Exception e) {
-            SyncLogger.error("Error update appointment customer: " + e.getMessage());
+            SyncLogger.info("Updating appointment customer: " + customer.getId());
+            Query query = new Query(Criteria.where("customer.id").is(customer.getId()));
+            Update update = new Update().set("customer", customer);
+            mongoTemplate.updateMulti(query, update, FullAppointmentDTO.class);
+        }catch (Exception e){
+            SyncLogger.error("Error updating appointment customer: " + e.getMessage());
             SyncLogger.trace(Arrays.toString(e.getStackTrace()));
         }
     }
 
     @Override
-    public void updateBeautyProcedure(BeautyProcedureDTO beautyProcedure) {
-
-        try {
-
-            SyncLogger.info("Update appointment beauty procedure: " + beautyProcedure.getId());
-            var query = new Query(Criteria.where("beautyProcedure.id").is(beautyProcedure.getId()));
-            var update = new Update()
-                    .set("beautyProcedure.name", beautyProcedure.getName())
-                    .set("beautyProcedure.description", beautyProcedure.getDescription());
-
+    public void updateBeautyProcedure(BeautyProcedureDTO beautyProcedureDTO) {
+        try{
+            SyncLogger.info("Updating appointment beauty procedure: " + beautyProcedureDTO.getId());
+            Query query = new Query(Criteria.where("beautyProcedure.id").is(beautyProcedureDTO.getId()));
+            Update update = new Update()
+                    .set("beautyProcedure.name", beautyProcedureDTO.getName())
+                    .set("beautyProcedure.description", beautyProcedureDTO.getDescription());
             mongoTemplate.updateMulti(query, update, FullAppointmentDTO.class);
-
-        } catch (Exception e) {
-            SyncLogger.error("Error update appointment beauty procedure: " + e.getMessage());
+        }catch (Exception e){
+            SyncLogger.error("Error updating appointment beauty procedure: "+ e.getMessage());
             SyncLogger.trace(Arrays.toString(e.getStackTrace()));
         }
+
+
     }
 }
