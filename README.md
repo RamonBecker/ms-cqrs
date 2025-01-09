@@ -89,6 +89,8 @@ RabbitMQ supports several exchange types for routing messages:
 ---
 
 
+
+
 ## Models and Diagrams
 
 The model and operation of the projects, the CQRS architecture and RabbitMQ will be presented below.
@@ -194,29 +196,209 @@ docker compose up --build
 docker compose up -d
 ```
 
-## **APIs**
+# API Endpoints Documentation
 
+To access the endpoints you must download the collection file and import it into your postman.
 
+## Ms-Beautique-Query Endpoints
 
+### Customers
+1. **List All**: `GET http://localhost:8086/ms-beautique-query/customer`
+2. **Find by Name**: `GET http://localhost:8086/ms-beautique-query/customer/name/testname`
+3. **Find by Email**: `GET http://localhost:8086/ms-beautique-query/customer/email/testemail`
 
+### Beauty Procedures
+1. **List All**: `GET http://localhost:8086/ms-beautique-query/beauty-procedure`
+2. **Find by Name**: `GET http://localhost:8086/ms-beautique-query/beauty-procedure/name/testname`
+3. **Find by Description**: `GET http://localhost:8086/ms-beautique-query/beauty-procedure/description/testdescription`
 
-## Future Enhancements
-- Implement advanced monitoring and logging for RabbitMQ and services.
-- Explore additional optimizations for read models using caching solutions like Redis.
-- Enhance the CI/CD pipeline for automated deployments.
+### Appointments
+
+1. **Find All**: `GET http://localhost:8086/ms-beautique-query/appointment`
+2. **Find by Customer ID**: `GET http://localhost:8086/ms-beautique-query/appointment/customer/1`
+3. **Find by Beauty Procedure**: `GET http://localhost:8086/ms-beautique-query/appointment/beauty-procedure/1`
 
 ---
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+## Ms-Command Endpoints
+
+### Customers
+1. **Create**: `POST http://localhost:8082/ms-beautique/customer`
+    ```json
+    {
+        "name": "name",
+        "phone": "1231253443",
+        "email": "teste@teste.com"
+    }
+    ```
+
+2. **Update**: `PUT http://localhost:8082/ms-beautique/customer`
+    ```json
+    {
+        "id": 1,
+        "name": "name",
+        "phone": "1231253443",
+        "email": "teste@teste.com"
+    }
+    ```
+
+3. **Delete**: `DELETE http://localhost:8082/ms-beautique/customer/{id}`
+
+### Beauty Procedures
+1. **Create**: `POST http://localhost:8082/ms-beautique/beauty-procedures`
+    ```json
+    {
+        "name": "haircut",
+        "description": "men's haircut",
+        "price": 45.00
+    }
+    ```
+
+2. **Update**: `PATCH http://localhost:8082/ms-beautique/beauty-procedures`
+    ```json
+    {
+        "id": 1,
+        "name": "haircut",
+        "description": "men's haircut",
+        "price": 60.00
+    }
+    ```
+
+3. **Delete**: `DELETE http://localhost:8082/ms-beautique/beauty-procedures/{id}`
+
+### Appointments
+1. **Create**: `POST http://localhost:8082/ms-beautique/appointments`
+    ```json
+    {
+        "dateTime": "2024-12-28T09:23:00",
+        "appointmentsOpen": true,
+        "customer": null,
+        "beautyProcedure": null
+    }
+    ```
+
+2. **Update**: `PATCH http://localhost:8082/ms-beautique/appointments`
+    ```json
+    {
+        "id": 1,
+        "dateTime": "2024-12-28T21:00:00",
+        "appointmentsOpen": true,
+        "customer": null,
+        "beautyProcedure": null
+    }
+    ```
+
+3. **Set Customer**: `PUT http://localhost:8082/ms-beautique/appointments`
+    ```json
+    {
+        "id": 1,
+        "customer": 5,
+        "beautyProcedure": 5
+    }
+    ```
+
+4. **Delete**: `DELETE http://localhost:8082/ms-beautique/appointments/{id}`
+
+## RabbitMQ Access Guide
+
+## Prerequisites
+Ensure you have the following requirements:
+1. RabbitMQ installed and running on your server.
+2. Credentials to access the RabbitMQ management interface and message broker.
+3. Proper configuration and permissions to access the desired queues and exchanges.
 
 ---
 
-## Contributing
-Contributions are welcome! Feel free to open an issue or submit a pull request to improve this project.
+## Accessing RabbitMQ Management Interface
+
+### Default URL
+The RabbitMQ Management Interface is typically accessible at:
+```
+http://<hostname>:15672
+```
+Replace `<hostname>` with the IP address or domain name of the RabbitMQ server. If running locally, use `localhost`.
+
+### Login Credentials
+Default credentials for RabbitMQ are:
+- **Username**: `guest`
+- **Password**: `guest`
+
+> Note: The `guest` user can only log in from `localhost`. If you are accessing RabbitMQ remotely, create a new user with the necessary permissions.
 
 ---
 
-## Contact
-For questions or feedback, please contact [your-email@example.com].
+## Connecting to RabbitMQ via Clients or Applications
+
+### Connection URL
+Use the following URL to connect to RabbitMQ:
+```
+amqp://<username>:<password>@<hostname>:5672/
+```
+Replace:
+- `<username>` with your RabbitMQ username.
+- `<password>` with your RabbitMQ password.
+- `<hostname>` with the RabbitMQ server hostname or IP address.
+
+### Libraries and Tools
+- **Java**: Use libraries like [Spring AMQP](https://spring.io/projects/spring-amqp) or [RabbitMQ Java Client](https://www.rabbitmq.com/java-client.html).
+
+
+## Setting Up Users and Permissions
+1. Log in to the RabbitMQ Management Interface.
+2. Navigate to the **Admin** tab.
+3. Click on **Add a user** and fill in:
+   - Username
+   - Password
+   - Tags (e.g., `administrator` for admin rights or `management` for limited access)
+4. Assign permissions to the user:
+   - Navigate to the **Permissions** section.
+   - Select the user and assign permissions for vhosts, queues, and exchanges.
+
+---
+
+## Monitoring RabbitMQ
+1. Access the Management Interface and check:
+   - **Queues**: Current messages in queues.
+   - **Exchanges**: Configured routing logic.
+   - **Connections**: Active clients.
+   - **Channels**: Message flow.
+2. Use RabbitMQ CLI for monitoring:
+   ```bash
+   rabbitmqctl list_queues
+   rabbitmqctl list_exchanges
+   ```
+---
+
+For additional details, refer to the [official RabbitMQ documentation](https://www.rabbitmq.com/documentation.html).
+
+
+
+## :zap: Technologies	
+
+- Java
+-  Spring Boot
+- API REST
+- PostgreSQL (Container)
+- Docker
+- Docker-compose
+- MongoDB (Container)
+- Shell
+- RabbitMQ (Container)
+- Spring Data JPA
+- Spring AMQP 
+
+## :memo: Developed features
+
+- [x] CRUD Customer
+- [x] CRUD BeautyProcedures
+- [x] CRUD Appointments
+
+## :technologist:	 Author
+
+By Ramon Becker 👋🏽 Get in touch!
+
+
+
+[<img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/github.svg' alt='github' height='40'>](https://github.com/RamonBecker)  [<img src='https://cdn.jsdelivr.net/npm/simple-icons@3.0.1/icons/linkedin.svg' alt='linkedin' height='40'>](https://www.linkedin.com/in/ramon-becker-da-silva-96b81b141//)
+![Gmail Badge](https://img.shields.io/badge/-ramonbecker68@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:ramonbecker68@gmail.com)
 
