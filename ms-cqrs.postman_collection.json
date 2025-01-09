@@ -1,0 +1,293 @@
+{
+	"info": {
+		"_postman_id": "3390ff0e-562a-4d87-ad91-1cdbc8e9c5f2",
+		"name": "ms-cqrs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "17759609"
+	},
+	"item": [
+		{
+			"name": "beautyProcedures",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Corte\",\r\n    \"description\": \"Corte de cabelo masculino\",\r\n    \"price\": 45.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8082/ms-beautique/beauty-procedures"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Corte\",\r\n    \"description\": \"Corte de cabelo feminino\",\r\n    \"price\": 60.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8082/ms-beautique/beauty-procedures"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8082/ms-beautique/beauty-procedures/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "appointments",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dateTime\": \"2024-12-28T09:23:00\",\r\n    \"appointmentsOpen\": true,\r\n    \"customer\": null,\r\n    \"beautyProcedure\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8082/ms-beautique/appointments"
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"dateTime\": \"2024-12-28T21:00:00\",\r\n    \"appointmentsOpen\": true,\r\n    \"customer\": null,\r\n    \"beautyProcedure\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8082/ms-beautique/appointments"
+					},
+					"response": []
+				},
+				{
+					"name": "SetCustomer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"customer\": 5,\r\n    \"beautyProcedure\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8082/ms-beautique/appointments"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8082/ms-beautique/appointments/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ms-beautique-query",
+			"item": [
+				{
+					"name": "customers",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8086/ms-beautique-query/customer"
+							},
+							"response": []
+						},
+						{
+							"name": "findByName",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8086/ms-beautique-query/customer/name/ra"
+							},
+							"response": []
+						},
+						{
+							"name": "findByEmail",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8086/ms-beautique-query/customer/email/teste"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "beautyProcedures",
+					"item": [
+						{
+							"name": "listAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8086/ms-beautique-query/beauty-procedure"
+							},
+							"response": []
+						},
+						{
+							"name": "listByName",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8086/ms-beautique-query/beauty-procedure/name/"
+							},
+							"response": []
+						},
+						{
+							"name": "listByDescription",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8086/ms-beautique-query/beauty-procedure/description/corte"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "appointments",
+					"item": [
+						{
+							"name": "findAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8084/ms-beautique-query/appointment"
+							},
+							"response": []
+						},
+						{
+							"name": "findBuCustomerId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8086/ms-beautique-query/appointment/customer/11"
+							},
+							"response": []
+						},
+						{
+							"name": "findByBeautyProcedure",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://localhost:8086/ms-beautique-query/appointment/beauty-procedure/4"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ms-command",
+			"item": [
+				{
+					"name": "customers",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Ramon\",\r\n    \"phone\": \"1231253443\",\r\n    \"email\": \"teste@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8082/ms-beautique/customer"
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \r\n    \"id\": 1,\r\n    \"name\": \"BECKER\",\r\n    \"phone\": \"6586786\",\r\n    \"email\": \"teste12312325@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://localhost:8082/ms-beautique/customer"
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "http://localhost:8082/ms-beautique/customer/4"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
