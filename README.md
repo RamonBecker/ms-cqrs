@@ -127,7 +127,10 @@ The model and operation of the projects, the CQRS architecture and RabbitMQ will
 
 ### Model CQRS
 
-![Model CQRS](https://github.com/user-attachments/assets/53ce50aa-1614-42b0-a0a8-132d6b1bbef4)
+
+![Model CQRS](https://github.com/user-attachments/assets/2f6326d2-4581-42c3-bb56-15e5be220b54)
+
+
 
 ## How CQRS works
 
