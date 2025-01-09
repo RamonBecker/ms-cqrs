@@ -49,7 +49,17 @@ The **Command Query Responsibility Segregation (CQRS)** architecture is an archi
 
 ## RabbitMQ in CQRS
 **RabbitMQ** is used as a messaging tool to handle asynchronous communication and decoupling between components in the CQRS architecture.
+---
+### Broker
+![Broker CQRS](https://github.com/user-attachments/assets/ad85b476-cf1d-414e-9e61-0ee714ce274a)
 
+---
+### How RabbitMQ works
+
+![Filas RabbitMQ](https://github.com/user-attachments/assets/71abcf13-a275-4409-acf9-c3e4038c6c0f)
+
+
+---
 ### Key Features
 
 #### Decoupling between Commands and Queries
@@ -66,19 +76,31 @@ RabbitMQ supports several exchange types for routing messages:
    - Routes messages to queues with matching binding keys.
    - **Use Case**: Routing by severity levels (e.g., `info`, `error`).
 
+![_Direct  Exchange](https://github.com/user-attachments/assets/a1e6efac-bd62-4e9e-8a1f-ae7ed044ace2)
+
+
 2. **Topic Exchange**
    - Routes messages using patterns in routing keys:
      - `*` matches a single word.
      - `#` matches zero or more words.
    - **Use Case**: Flexible publish/subscribe systems.
 
+![Topic  Exchange](https://github.com/user-attachments/assets/8ef43cfb-e1ed-4998-9d77-d5564bab3eaa)
+
+
 3. **Fanout Exchange**
    - Broadcasts messages to all connected queues, regardless of the routing key.
    - **Use Case**: Notifications or global events.
 
+![Fanout Exchange](https://github.com/user-attachments/assets/a2ec0de1-af90-48d1-8fd3-5775345932f3)
+
+
 4. **Headers Exchange**
    - Routes messages based on headers instead of routing keys.
    - **Use Case**: Complex routing based on message attributes.
+     
+![Header Exchange](https://github.com/user-attachments/assets/588b46da-21f1-4fc4-ae89-62441a9fb8bc)
+
 
 ### Key Advantages of This Implementation
 - **Scalable Architecture**: Independent scaling of read and write operations.
